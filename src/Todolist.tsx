@@ -12,6 +12,8 @@ export type TaskType = {
 type PropsType = {
     title: string
     tasks: Array<TaskType>
+    editTodolistTitle: (todoListId: string, title: string) => void
+    editTaskTitle: (value: string, todoListId: string, taskId: string) => void
     removeTodolist: (id: string) => void
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, id: string) => void
@@ -33,12 +35,23 @@ export function Todolist(props: PropsType) {
     const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
-    const addItem = (value: string) => {
+    const editItem = (value: string, taskId: string | undefined) => {
+        if (taskId) {
+        props.editTaskTitle(value, props.id, taskId)
+        }
+    }
 
+    const editTodolistTitle = (title: string) => {
+        props.editTodolistTitle(props.id, title)
     }
 
     return <div>
-        <h3 className="todoListTitle">{props.title}</h3>
+        <EditableSpan
+            editItem={editTodolistTitle}
+            value={props.title}
+            class={"todoListTitle"}
+        />
+        {/*<h3 className="todoListTitle">{props.title}</h3>*/}
         <button onClick={removeTodolist}>X</button>
         <InputPlusButton
             addItem={addTask}
@@ -54,8 +67,7 @@ export function Todolist(props: PropsType) {
                             type="checkbox"
                             checked={t.isDone}
                             onChange={onChangeHandler}/>
-                        <EditableSpan addItem={addItem} value={t.title}/>
-                        {/*<span onDoubleClick={onDoubleClickTaskTitleHandler}>{t.title}</span>*/}
+                        <EditableSpan editItem={editItem} value={t.title} taskId={t.id}/>
                         <button onClick={() => {
                             props.removeTask(t.id, props.id)
                         }}>x
@@ -65,7 +77,7 @@ export function Todolist(props: PropsType) {
             }
         </ul>
         <div>
-            <button className={"filterButtons " + (props.filter === "all" ? "active" : "")} onClick={() => {
+            <button className={"filterButtons " + (props.filter === "All" ? "active" : "")} onClick={() => {
                 props.changeFilter("All", props.id)
             }}>
                 All

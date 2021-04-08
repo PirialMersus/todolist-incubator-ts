@@ -2,11 +2,14 @@ import React, {ChangeEvent, useState} from "react";
 import InputPlusButton from "../InpuPlusButton/InputPlusButton";
 
 type EditableSpanPropsType = {
-    addItem: (title: string) => void
+    editItem: (title: string, taskId?: string) => void
     value: string
+    taskId?: string
+    class?: string
 }
 
 const EditableSpan = (props: EditableSpanPropsType) => {
+
     const [editMode, setEditMode] = useState(false)
     const [value, setValue] = useState(props.value)
 
@@ -17,15 +20,16 @@ const EditableSpan = (props: EditableSpanPropsType) => {
         setValue(e.currentTarget.value)
     }
     const onBlurHandler = () => {
-        props.addItem(value)
+        props.editItem(value, props.taskId)
         setEditMode(false)
     }
 
     return (
         <>
             {!editMode
-                ? <span onDoubleClick={onDoubleClickHandler}>{props.value}</span>
-                : <input
+                ? <span className={props.class ? props.class : ''}
+                    onDoubleClick={onDoubleClickHandler}>{props.value}</span>
+                : <input className={props.class ? props.class : ''}
                     autoFocus
                     value={value}
                     onChange={onChangeHandler}

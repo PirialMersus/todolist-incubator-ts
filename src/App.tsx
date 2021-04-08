@@ -82,6 +82,18 @@ function App() {
         }
     }
 
+    const editTaskTitle = (value: string, todolistId: string, taskId: string) => {
+        setTasks({
+            ...tasks, [todolistId]: [...tasks[todolistId].map(task => {
+                if (task.id === taskId) {
+                    return {...task, title: value}
+                } else {
+                    return task
+                }
+            })]
+        })
+    }
+
     function removeTask(id: string, todolistId: string) {
         const todolistTasks = tasks[todolistId]
         tasks[todolistId] = todolistTasks.filter(t => t.id !== id);
@@ -105,6 +117,16 @@ function App() {
         }
     }
 
+    function editTodolistTitle(todoListId: string, title: string) {
+        setTodolists([...todolists.map(tl => {
+            if (tl.id === todoListId) {
+                return {...tl, title: title}
+            } else {
+                return tl
+            }
+        })])
+    }
+
     return (
         <div className="App">
             <InputPlusButton addItem={addTodolist}/>
@@ -123,6 +145,8 @@ function App() {
                         <Todolist title={tl.title}
                                   filter={tl.filter}
                                   clickOnCheckBox={clickOnCheckBox}
+                                  editTodolistTitle={editTodolistTitle}
+                                  editTaskTitle={editTaskTitle}
                                   tasks={tasksForTodolist}
                                   removeTask={removeTask}
                                   changeFilter={changeFilter}
