@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from "react";
 import InputPlusButton from "../InpuPlusButton/InputPlusButton";
+import TextField from "@material-ui/core/TextField";
 
 type EditableSpanPropsType = {
     editItem: (title: string, taskId?: string) => void
@@ -28,13 +29,19 @@ const EditableSpan = (props: EditableSpanPropsType) => {
         <>
             {!editMode
                 ? <span className={props.class ? props.class : ''}
-                    onDoubleClick={onDoubleClickHandler}>{props.value}</span>
-                : <input className={props.class ? props.class : ''}
-                    autoFocus
-                    value={value}
-                    onChange={onChangeHandler}
-                    onBlur={onBlurHandler}
+                        onDoubleClick={onDoubleClickHandler}>{props.value}</span>
+                : <TextField autoFocus
+                             onChange={onChangeHandler}
+                             onBlur={onBlurHandler}
+                             label={value}
+                             variant="filled"
                 />
+                // <input className={props.class ? props.class : ''}
+                // autoFocus
+                // value={value}
+                // onChange={onChangeHandler}
+                // onBlur={onBlurHandler}
+                // />
             }
         </>
     )
