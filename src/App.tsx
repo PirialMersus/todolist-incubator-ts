@@ -103,11 +103,13 @@ function App() {
     }
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        const todolist = todolists.find(tl => tl.id === todolistId)
-        if (todolist) {
-            todolist.filter = value
-        }
-        setTodolists([...todolists]);
+        setTodolists([...todolists.map(tl => {
+            if (tl.id === todolistId) {
+                return {...tl, filter: value}
+            } else {
+                return tl
+            }
+        })]);
     }
 
     function clickOnCheckBox(id: string, newIsDoneValue: boolean, todolistId: string) {
