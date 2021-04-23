@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from 'react'
 import './App.css'
-import {Todolist} from './Todolist'
+import {Todolist, TaskType} from './Todolist'
 import {v1} from "uuid"
 import InputPlusButton from "./components/InpuPlusButton/InputPlusButton";
 import {AppBar, IconButton, Typography, Button, Toolbar, Container, Grid, Paper} from "@material-ui/core";
@@ -14,13 +14,17 @@ export type TodoListType = {
 }
 export type TodolistsType = Array<TodoListType>
 
+export type TasksType = {
+    [key: string] : Array<TaskType>
+}
+
 
 function App() {
 
     const todolistId1 = v1()
     const todolistId2 = v1()
 
-    let [tasks, setTasks] = useState({
+    let [tasks, setTasks] = useState<TasksType>({
         [todolistId1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -49,6 +53,10 @@ function App() {
     }])
 
     const [taskValue, setTaskValue] = useState('')
+    function setTempTaskValue(text: string) {
+        setTaskValue(text)
+    }
+
 
     function removeTodolist(todolistId: string) {
         setTodolists(todolists.filter(tl => tl.id !== todolistId))
@@ -67,9 +75,27 @@ function App() {
         setTasks({...tasks, [todolistId]: []})
     }
 
-    function setTempTaskValue(text: string) {
-        setTaskValue(text)
+    function changeFilter(value: FilterValuesType, todolistId: string) {
+        setTodolists([...todolists.map(tl => {
+            if (tl.id === todolistId) {
+                return {...tl, filter: value}
+            } else {
+                return tl
+            }
+        })]);
     }
+
+    function editTodolistTitle(todoListId: string, title: string) {
+        setTodolists([...todolists.map(tl => {
+            if (tl.id === todoListId) {
+                return {...tl, title: title}
+            } else {
+                return tl
+            }
+        })])
+    }
+
+
 
     function addTask(todolistId: string, taskValue: string) {
         if (taskValue.trim().length !== 0) {
@@ -102,17 +128,7 @@ function App() {
         setTasks({...tasks});
     }
 
-    function changeFilter(value: FilterValuesType, todolistId: string) {
-        setTodolists([...todolists.map(tl => {
-            if (tl.id === todolistId) {
-                return {...tl, filter: value}
-            } else {
-                return tl
-            }
-        })]);
-    }
-
-    function clickOnCheckBox(id: string, newIsDoneValue: boolean, todolistId: string) {
+    function changeTaskStatus(id: string, newIsDoneValue: boolean, todolistId: string) {
         const todolistTasks = tasks[todolistId]
         const task = todolistTasks.find(task => task.id === id)
         if (task) {
@@ -121,15 +137,6 @@ function App() {
         }
     }
 
-    function editTodolistTitle(todoListId: string, title: string) {
-        setTodolists([...todolists.map(tl => {
-            if (tl.id === todoListId) {
-                return {...tl, title: title}
-            } else {
-                return tl
-            }
-        })])
-    }
 
     return (
         <div className="App">
@@ -164,7 +171,7 @@ function App() {
                                     <Paper style={{padding: "10px"}}>
                                         <Todolist title={tl.title}
                                                   filter={tl.filter}
-                                                  clickOnCheckBox={clickOnCheckBox}
+                                                  clickOnCheckBox={changeTaskStatus}
                                                   editTodolistTitle={editTodolistTitle}
                                                   editTaskTitle={editTaskTitle}
                                                   tasks={tasksForTodolist}
