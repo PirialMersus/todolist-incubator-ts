@@ -7,19 +7,30 @@ type TasksType = {
     [todolistId: string]: Array<TaskType>
 }
 
-test('correct task should be removed', () => {
+let todolistId1: string
+let todolistId2: string
 
-    const todolistId1 = v1()
-    const todolistId2 = v1()
+let taskId1: string
+let taskId2: string
+let taskId3: string
+let taskId4: string
+let taskId5: string
 
-    const taskId1 = v1()
-    const taskId2 = v1()
-    const taskId3 = v1()
-    const taskId4 = v1()
-    const taskId5 = v1()
+let tasks: TasksType
 
 
-    const tasks: TasksType = {
+beforeEach(() => {
+    todolistId1 = v1()
+    todolistId2 = v1()
+
+    taskId1 = v1()
+    taskId2 = v1()
+    taskId3 = v1()
+    taskId4 = v1()
+    taskId5 = v1()
+
+
+    tasks = {
         [todolistId1]: [
             {id: taskId1, title: "HTML&CSS1", isDone: true},
             {id: taskId2, title: "JS1", isDone: true},
@@ -35,6 +46,12 @@ test('correct task should be removed', () => {
             {id: v1(), title: "GraphQL2", isDone: false},
         ]
     }
+})
+
+
+test('correct task should be removed', () => {
+
+
 
     const endState = tasksReducer(tasks, removeTaskAC(taskId2, todolistId1))
 
@@ -45,26 +62,6 @@ test('correct task should be removed', () => {
 });
 test('correct task should be added', () => {
 
-    const todolistId1 = v1()
-    const todolistId2 = v1()
-
-    const tasks: TasksType = {
-        [todolistId1]: [
-            {id: v1(), title: "HTML&CSS1", isDone: true},
-            {id: v1(), title: "JS1", isDone: true},
-            {id: v1(), title: "ReactJS1", isDone: false},
-            {id: v1(), title: "Rest API1", isDone: false},
-            {id: v1(), title: "GraphQL1", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "HTML&CSS2", isDone: true},
-            {id: v1(), title: "JS2", isDone: true},
-            {id: v1(), title: "ReactJS2", isDone: false},
-            {id: v1(), title: "Rest API2", isDone: false},
-            {id: v1(), title: "GraphQL2", isDone: false},
-        ]
-    }
-
     const endState = tasksReducer(tasks, addTaskAC("new task is added", todolistId2))
 
     expect(endState[todolistId2].length).toBe(6);
@@ -72,64 +69,12 @@ test('correct task should be added', () => {
 });
 test('correct task title should be edit', () => {
 
-    const todolistId1 = v1()
-    const todolistId2 = v1()
-
-    const taskId1 = v1()
-    const taskId2 = v1()
-    const taskId3 = v1()
-    const taskId4 = v1()
-    const taskId5 = v1()
-
-
-    const tasks: TasksType = {
-        [todolistId1]: [
-            {id: taskId1, title: "HTML&CSS1", isDone: true},
-            {id: taskId2, title: "JS1", isDone: true},
-            {id: taskId3, title: "ReactJS1", isDone: false},
-            {id: taskId4, title: "Rest API1", isDone: false},
-            {id: taskId5, title: "GraphQL1", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "HTML&CSS2", isDone: true},
-            {id: v1(), title: "JS2", isDone: true},
-            {id: v1(), title: "ReactJS2", isDone: false},
-            {id: v1(), title: "Rest API2", isDone: false},
-            {id: v1(), title: "GraphQL2", isDone: false},
-        ]
-    }
-
     const endState = tasksReducer(tasks, editTaskTitleAC("new task title", todolistId1, taskId4))
 
     expect(endState[todolistId1].length).toBe(5);
     expect(endState[todolistId1][3].title).toBe("new task title");
 });
 test('Edit task status', () => {
-    const todolistId1 = v1()
-    const todolistId2 = v1()
-
-    const taskId1 = v1()
-    const taskId2 = v1()
-    const taskId3 = v1()
-    const taskId4 = v1()
-    const taskId5 = v1()
-
-    const tasks: TasksType = {
-        [todolistId1]: [
-            {id: taskId1, title: "HTML&CSS1", isDone: true},
-            {id: taskId2, title: "JS1", isDone: true},
-            {id: taskId3, title: "ReactJS1", isDone: false},
-            {id: taskId4, title: "Rest API1", isDone: false},
-            {id: taskId5, title: "GraphQL1", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "HTML&CSS2", isDone: true},
-            {id: v1(), title: "JS2", isDone: true},
-            {id: v1(), title: "ReactJS2", isDone: false},
-            {id: v1(), title: "Rest API2", isDone: false},
-            {id: v1(), title: "GraphQL2", isDone: false},
-        ]
-    }
 
     const endState = tasksReducer(tasks, changeTaskStatusAC(todolistId1, taskId5, true,))
 
@@ -137,32 +82,6 @@ test('Edit task status', () => {
     expect(endState[todolistId1][4].isDone).toBeTruthy()
 });
 test('the removal of the todolist caused the removal of the tasks', () => {
-    const todolistId1 = v1()
-    const todolistId2 = v1()
-    const todolistId3 = v1()
-
-    const taskId1 = v1()
-    const taskId2 = v1()
-    const taskId3 = v1()
-    const taskId4 = v1()
-    const taskId5 = v1()
-
-    const tasks: TasksType = {
-        [todolistId1]: [
-            {id: taskId1, title: "HTML&CSS1", isDone: true},
-            {id: taskId2, title: "JS1", isDone: true},
-            {id: taskId3, title: "ReactJS1", isDone: false},
-            {id: taskId4, title: "Rest API1", isDone: false},
-            {id: taskId5, title: "GraphQL1", isDone: false},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "HTML&CSS2", isDone: true},
-            {id: v1(), title: "JS2", isDone: true},
-            {id: v1(), title: "ReactJS2", isDone: false},
-            {id: v1(), title: "Rest API2", isDone: false},
-            {id: v1(), title: "GraphQL2", isDone: false},
-        ]
-    }
 
     const endState = tasksReducer(tasks, removeTodoListsAC(todolistId2))
     const keys = Object.keys(endState)

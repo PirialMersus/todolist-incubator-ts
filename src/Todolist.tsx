@@ -30,7 +30,6 @@ type PropsType = {
 }
 
 export function Todolist(props: PropsType) {
-
     const addTask = (tempTaskValue: string) => {
         props.addTask(props.id, tempTaskValue)
     }
