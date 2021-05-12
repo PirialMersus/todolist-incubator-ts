@@ -2,7 +2,7 @@ import React, {ChangeEvent, useState} from 'react'
 import './App.css'
 import {Todolist, TaskType} from './Todolist'
 import {v1} from "uuid"
-import InputPlusButton from "./components/InpuPlusButton/InputPlusButton";
+import AddItemForm from "./components/InpuPlusButton/AddItemForm";
 import {AppBar, IconButton, Typography, Button, Toolbar, Container, Grid, Paper} from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 
@@ -15,7 +15,7 @@ export type TodoListType = {
 export type TodolistsType = Array<TodoListType>
 
 export type TasksType = {
-    [key: string] : Array<TaskType>
+    [key: string]: Array<TaskType>
 }
 
 
@@ -53,6 +53,7 @@ function App() {
     }])
 
     const [taskValue, setTaskValue] = useState('')
+
     function setTempTaskValue(text: string) {
         setTaskValue(text)
     }
@@ -94,7 +95,6 @@ function App() {
             }
         })])
     }
-
 
 
     function addTask(todolistId: string, taskValue: string) {
@@ -153,36 +153,29 @@ function App() {
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "10px"}}>
-                    <InputPlusButton addItem={addTodolist}/>
+                    <AddItemForm addItem={addTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {
                         todolists.map(tl => {
-                            const allTodolistTasks = tasks[tl.id]
-                            let tasksForTodolist = allTodolistTasks
 
-                            if (tl.filter === "active") {
-                                tasksForTodolist = allTodolistTasks.filter(task => !task.isDone)
-                            }
-                            if (tl.filter === "completed") {
-                                tasksForTodolist = allTodolistTasks.filter(task => task.isDone)
-                            }
                             return (<Grid item key={tl.id}>
                                     <Paper style={{padding: "10px"}}>
-                                        <Todolist title={tl.title}
-                                                  filter={tl.filter}
-                                                  clickOnCheckBox={changeTaskStatus}
-                                                  editTodolistTitle={editTodolistTitle}
-                                                  editTaskTitle={editTaskTitle}
-                                                  tasks={tasksForTodolist}
-                                                  removeTask={removeTask}
-                                                  changeFilter={changeFilter}
-                                                  tempTaskValue={taskValue}
-                                                  setTempTaskValue={setTempTaskValue}
-                                                  addTask={addTask}
+                                        <Todolist
+                                            title={tl.title}
+                                            filter={tl.filter}
+                                            clickOnCheckBox={changeTaskStatus}
+                                            editTodolistTitle={editTodolistTitle}
+                                            editTaskTitle={editTaskTitle}
+                                            tasks={tasks[tl.id]}
+                                            removeTask={removeTask}
+                                            changeFilter={changeFilter}
+                                            // tempTaskValue={taskValue}
+                                            // setTempTaskValue={setTempTaskValue}
+                                            addTask={addTask}
 
-                                                  id={tl.id}
-                                                  removeTodolist={removeTodolist}
+                                            id={tl.id}
+                                            removeTodolist={removeTodolist}
                                         /></Paper></Grid>
                             )
                         })

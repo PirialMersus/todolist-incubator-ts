@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from "react";
-import InputPlusButton from "../InpuPlusButton/InputPlusButton";
+import AddItemForm from "../InpuPlusButton/AddItemForm";
 import TextField from "@material-ui/core/TextField";
 
 type EditableSpanPropsType = {

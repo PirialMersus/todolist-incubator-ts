@@ -3,17 +3,18 @@ import Button from "@material-ui/core/Button";
 import {IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
-type InputPlusButtonPropsType = {
+type AddItemFormPropsType = {
     addItem: (title: string) => void
     value?: string
 }
 
-const InputPlusButton = (props: InputPlusButtonPropsType) => {
+const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+    console.log("addItemFormCalled")
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setError(null)
+        // setError(null)
         const taskText = e.currentTarget.value
         setTitle(taskText)
     }
@@ -21,7 +22,7 @@ const InputPlusButton = (props: InputPlusButtonPropsType) => {
         if (title.trim().length === 0) {
             setError("Title is required!")
         } else {
-            setError(null)
+            error && setError(null)
             props.addItem(title)
             setTitle('')
         }
@@ -51,5 +52,5 @@ const InputPlusButton = (props: InputPlusButtonPropsType) => {
             {error && <div className="error-message">{error}</div>}
         </div>
     )
-}
-export default InputPlusButton
+})
+export default AddItemForm

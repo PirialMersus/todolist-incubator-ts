@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useCallback, useState} from 'react';
 import {FilterValuesType} from './App';
-import InputPlusButton from "./components/InpuPlusButton/InputPlusButton";
+import AddItemForm from "./components/InpuPlusButton/AddItemForm";
 import EditableSpan from "./components/EditableSpan/EditableSpan";
 import IconButton from '@material-ui/core/IconButton';
 import {Delete} from '@material-ui/icons';
@@ -21,18 +21,30 @@ type PropsType = {
     removeTodolist: (id: string) => void
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, id: string) => void
-    setTempTaskValue: (value: string) => void
+    // setTempTaskValue: (value: string) => void
     addTask: (todolistId: string, taskText: string) => void
-    tempTaskValue: string
+    // tempTaskValue: string
     clickOnCheckBox: (id: string, newIsDoneValue: boolean, todolistId: string) => void
     filter: string
     id: string
 }
 
-export function Todolist(props: PropsType) {
-    const addTask = (tempTaskValue: string) => {
-        props.addTask(props.id, tempTaskValue)
+export const Todolist = React.memo((props: PropsType) => {
+    console.log("Todolist called")
+
+    const allTodolistTasks = props.tasks
+    let tasksForTodolist = allTodolistTasks
+
+    if (props.filter === "active") {
+        tasksForTodolist = allTodolistTasks.filter(task => !task.isDone)
     }
+    if (props.filter === "completed") {
+        tasksForTodolist = allTodolistTasks.filter(task => task.isDone)
+    }
+
+    const addTask = useCallback((tempTaskValue: string) => {
+        props.addTask(props.id, tempTaskValue)
+    }, [])
 
     const removeTodolist = () => {
         props.removeTodolist(props.id)
@@ -55,12 +67,12 @@ export function Todolist(props: PropsType) {
         />
         <IconButton aria-label="delete" onClick={removeTodolist}><Delete/>
         </IconButton>
-        <InputPlusButton
+        <AddItemForm
             addItem={addTask}
         />
         <ul>
             {
-                props.tasks.map(t => {
+                tasksForTodolist.map(t => {
                     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
                         props.clickOnCheckBox(t.id, event.currentTarget.checked, props.id)
                     }
@@ -113,4 +125,4 @@ export function Todolist(props: PropsType) {
             </Button>
         </div>
     </div>
-}
+})
