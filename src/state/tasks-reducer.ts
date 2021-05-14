@@ -61,10 +61,10 @@ export const tasksReducer = (state: TasksType = initialState, action: ActionType
 
         case "CHANGE_TASK_STATUS":
             let todolistTasks = state[action.todolistId]
-            const task = todolistTasks.find(task => task.id === action.taskId)
-            if (task) {
-                task.isDone = action.newIsDoneValue
-            }
+            const newTasksArray = todolistTasks
+                .map(t => t.id === action.taskId ? {...t, isDone: action.newIsDoneValue} : t)
+            state[action.todolistId] = newTasksArray
+
             return {...state}
 
         case "REMOVE_TASK":
@@ -77,9 +77,9 @@ export const tasksReducer = (state: TasksType = initialState, action: ActionType
         case "ADD-TODOLIST":
             const newTodoListObj = {...state, [action.id]: []}
             return newTodoListObj
-            // const copyState= {...tasks}
-            // copyState[action.id] = []
-            // return copyState
+        // const copyState= {...tasks}
+        // copyState[action.id] = []
+        // return copyState
         case "REMOVE-TODOLIST":
             const stateCopy = {...state}
             delete stateCopy[action.todolistId]

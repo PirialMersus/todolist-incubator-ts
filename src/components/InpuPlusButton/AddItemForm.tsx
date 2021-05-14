@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useState} from "react";
-import Button from "@material-ui/core/Button";
 import {IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
@@ -9,7 +8,6 @@ type AddItemFormPropsType = {
 }
 
 const AddItemForm = React.memo((props: AddItemFormPropsType) => {
-    console.log("addItemFormCalled")
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 

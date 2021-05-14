@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback} from 'react'
 import './App.css'
 import {TaskType, Todolist} from './Todolist'
 import AddItemForm from "./components/InpuPlusButton/AddItemForm";
@@ -44,20 +44,20 @@ function AppWithRedux() {
     const removeTodolist = useCallback((todolistId: string) => {
         dispatch(removeTodoListsAC(todolistId))
         delete tasks[todolistId]
-    },[])
+    },[dispatch, tasks])
 
     const addTodolist = useCallback((todolistTitle: string) => {
         const action = addTodoListsAC(todolistTitle)
         dispatch(action)
-    }, [])
+    }, [dispatch])
 
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         dispatch(changeTodoListFilterAC(value, todolistId))
-    }, [])
+    }, [dispatch])
 
     const editTodolistTitle = useCallback((todoListId: string, title: string) => {
         dispatch(changeTodoListTitleAC(todoListId, title))
-    }, [])
+    }, [dispatch])
 
 
     const addTask = useCallback((todolistId: string, taskValue: string) => {
@@ -65,19 +65,19 @@ function AppWithRedux() {
             dispatch(addTaskAC(taskValue, todolistId))
 
         }
-    }, [])
+    }, [dispatch])
 
     const editTaskTitle = useCallback((value: string, todolistId: string, taskId: string) => {
         dispatch(editTaskTitleAC(value, todolistId, taskId))
-    }, [])
+    }, [dispatch])
 
     const removeTask = useCallback((id: string, todolistId: string) => {
         dispatch(removeTaskAC(id, todolistId))
-    }, [])
+    }, [dispatch])
 
     const changeTaskStatus = useCallback((id: string, newIsDoneValue: boolean, todolistId: string) => {
         dispatch(changeTaskStatusAC(todolistId, id, newIsDoneValue))
-    }, [])
+    }, [dispatch])
 
 
     return (
