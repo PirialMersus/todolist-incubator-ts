@@ -2,7 +2,7 @@ import React, {ChangeEvent, useState} from 'react'
 import './App.css'
 import {Todolist, TaskType} from './Todolist'
 import {v1} from "uuid"
-import AddItemForm from "./components/InpuPlusButton/AddItemForm";
+import AddItemForm from "./components/AddItemForm/AddItemForm";
 import {AppBar, IconButton, Typography, Button, Toolbar, Container, Grid, Paper} from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 

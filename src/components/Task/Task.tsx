@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {Delete} from "@material-ui/icons";
 import {TaskType} from "../../Todolist";
 
-type TaskPropsType = {
+export type TaskPropsType = {
     task: TaskType
     todoListId: string
     editItem: (value: string, taskId: string | undefined) => void

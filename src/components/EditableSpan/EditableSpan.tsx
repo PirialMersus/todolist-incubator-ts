@@ -1,8 +1,8 @@
 import React, {ChangeEvent, useState} from "react";
-import AddItemForm from "../InpuPlusButton/AddItemForm";
+import AddItemForm from "../AddItemForm/AddItemForm";
 import TextField from "@material-ui/core/TextField";
 
-type EditableSpanPropsType = {
+export type EditableSpanPropsType = {
     editItem: (title: string, taskId?: string) => void
     value: string
     taskId?: string

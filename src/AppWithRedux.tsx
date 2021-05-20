@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import './App.css'
 import {TaskType, Todolist} from './Todolist'
-import AddItemForm from "./components/InpuPlusButton/AddItemForm";
+import AddItemForm from "./components/AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import {addTaskAC, changeTaskStatusAC, editTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
