@@ -5,13 +5,13 @@ import AddItemForm, {AddItemFormPropsType} from '../components/AddItemForm/AddIt
 import {action} from "@storybook/addon-actions";
 
 export default {
-  title: 'Todolist/AddItemForm',
+  title: 'Todolist/AddItemFormBaseExample',
   component: AddItemForm,
 } as Meta;
 
 const Template: Story<AddItemFormPropsType> = (args) => <AddItemForm {...args} />;
 
-export const AddItemFormExample = Template.bind({});
-AddItemFormExample.args = {
+export const AddItemFormBaseExample = Template.bind({});
+AddItemFormBaseExample.args = {
   addItem: action('Button inside form clicked')
 };
