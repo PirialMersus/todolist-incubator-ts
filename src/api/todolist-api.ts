@@ -9,14 +9,14 @@ const instance = axios.create({
     }
 })
 
-type TodolistType= {
+export type TodolistType= {
     id: string
     addedDate: string
     order: number
     title: string
 }
 
-type ResponseType<D> = {
+type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
     data: D

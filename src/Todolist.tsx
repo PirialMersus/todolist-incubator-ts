@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useCallback} from 'react';
-import {FilterValuesType} from './App';
+import {FilterValuesType} from './App.txt';
 import AddItemForm from "./components/AddItemForm/AddItemForm";
 import EditableSpan from "./components/EditableSpan/EditableSpan";
 import IconButton from '@material-ui/core/IconButton';
@@ -7,12 +7,9 @@ import {Delete} from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Task from "./components/Task/Task";
+import { TaskType } from './api/tasks-api';
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+
 
 type PropsType = {
     title: string

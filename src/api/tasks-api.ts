@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -9,7 +16,7 @@ const instance = axios.create({
     }
 })
 
-type TaskType = {
+export type TaskType = {
     description: string
     title: string
     completed: boolean

@@ -1,6 +1,6 @@
 import {addTodoListsAC, removeTodoListsAC, todoListReducer} from './todolists-reducer';
 import {v1} from 'uuid';
-import {TasksType, TodolistsType, TodoListType} from '../App';
+import {TasksType, TodolistsType, TodoListType} from '../App.txt';
 import {tasksReducer} from "./tasks-reducer";
 
 test('TodoListId is equal TodoListId from tasks', () => {
