@@ -3,14 +3,14 @@ import Checkbox from "@material-ui/core/Checkbox";
 import EditableSpan from "../EditableSpan/EditableSpan";
 import IconButton from "@material-ui/core/IconButton";
 import {Delete} from "@material-ui/icons";
-import {TaskType} from "../../Todolist";
+import {TaskStatuses, TaskType} from "../../api/tasks-api";
 
 export type TaskPropsType = {
     task: TaskType
     todoListId: string
     editItem: (value: string, taskId: string | undefined) => void
     removeTask: (taskId: string, todolistId: string) => void
-    clickOnCheckBox: (id: string, newIsDoneValue: boolean, todolistId: string) => void
+    clickOnCheckBox: (id: string, status: TaskStatuses, todolistId: string) => void
 
 }
 
@@ -18,13 +18,14 @@ const Task = React.memo(({task, todoListId, editItem, removeTask, clickOnCheckBo
     console.log("Task called")
 
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        clickOnCheckBox(task.id, event.currentTarget.checked, todoListId)
+        const newIsDoneValue = event.currentTarget.checked
+        clickOnCheckBox(task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todoListId)
     }
     return (
         <>
             <Checkbox
                 onChange={onChangeHandler}
-                checked={task.isDone}
+                checked={task.status === TaskStatuses.Completed}
                 value="checkedA"
                 color={"primary"}
             />
