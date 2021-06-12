@@ -7,10 +7,9 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Task from "./components/Task/Task";
 import {TaskStatuses, TaskType} from './api/tasks-api';
-import { FilterValuesType } from './state/todolists-reducer';
-import { fetchTasksTC } from './state/tasks-reducer';
+import {FilterValuesType} from './state/todolists-reducer';
+import {fetchTasksTC} from './state/tasks-reducer';
 import {useDispatch} from "react-redux";
-
 
 
 type PropsType = {
@@ -34,7 +33,7 @@ export const Todolist = React.memo((props: PropsType) => {
 
     useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    },[])
+    }, [])
 
     const allTodolistTasks = props.tasks
     let tasksForTodolist = allTodolistTasks

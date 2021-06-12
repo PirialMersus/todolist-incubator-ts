@@ -1,7 +1,8 @@
 import {v1} from "uuid";
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
-import { AppRootStateType } from "./store";
+import {AppRootStateType} from "./store";
+import {setAppStatusAC} from "./app-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -121,6 +122,7 @@ export type SetTodoListsAT = ReturnType<typeof setTodosAC>
 
 export const addTodolistTC = (title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.createTodolist(title)
             .then((res) => {
                 dispatch(addTodoListsAC(title,
@@ -128,14 +130,17 @@ export const addTodolistTC = (title: string) => {
                     res.data.data.item.order,
                     res.data.data.item.addedDate
                 ))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
 export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.deleteTodolist(todolistId)
         .then(() => {
             const action = removeTodoListsAC(todolistId);
             dispatch(action);
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 export const changeTodolistTitleTC = (todolistId: string, title: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
@@ -144,17 +149,22 @@ export const changeTodolistTitleTC = (todolistId: string, title: string) => (dis
         return t.id === todolistId
     })
     if (todo) {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.updateTodolist(todolistId, title)
             .then(() => {
                 const action = changeTodoListTitleAC(todolistId, title)
                 dispatch(action)
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
 
 export const fetchTodolistsTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    // debugger
     todolistAPI.getTodolists()
         .then((res) => {
             dispatch(setTodosAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }

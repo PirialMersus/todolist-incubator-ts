@@ -81,7 +81,6 @@ export const tasksAPI = {
         return promise
     },
     createTask(todolistId: string, title: string) {
-        debugger
         const promise = instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
         return promise
     },
