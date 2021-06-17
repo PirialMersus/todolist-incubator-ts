@@ -3,7 +3,8 @@ import {tasksAPI, TaskStatuses, TaskType} from "../api/tasks-api";
 import {TasksType} from "../AppWithRedux";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
-import {setAppStatusAC} from "./app-reducer";
+import {setAppStatusAC, setErrorAC} from "./app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 type AddTaskAT = {
     type: "ADD_TASK"
@@ -149,8 +150,24 @@ export const addTaskTC = (todolistId: string, taskTitile: string) => {
         dispatch(setAppStatusAC('loading'))
         tasksAPI.createTask(todolistId, taskTitile)
             .then((res) => {
-                dispatch(addTaskAC(res.data.data.item))
-                dispatch(setAppStatusAC('succeeded'))
+                if (res.data.resultCode === 0) {
+                    dispatch(addTaskAC(res.data.data.item))
+                    dispatch(setAppStatusAC('succeeded'))
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                    // if (res.data.messages.length) {
+                    //     dispatch(setErrorAC(res.data.messages[0]))
+                    // } else {
+                    //     dispatch(setErrorAC('Some error occured'))
+                    // }
+                    // dispatch(setAppStatusAC('failed'))
+                }
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
+                // dispatch(setErrorAC(error.message))
+                // dispatch(setAppStatusAC('failed'))
+
             })
     }
 }
@@ -171,21 +188,42 @@ export const changeTaskTitleTC = (taskId: string, todolistId: string, newTitle: 
                 description: task.description,
                 deadline: task.deadline,
                 status: task.status
-            }).then(() => {
-                const action = editTaskTitleAC( newTitle, todolistId, taskId)
-                dispatch(action)
-                dispatch(setAppStatusAC('succeeded'))
             })
+                .then((res) => {
+                    // debugger
+                    if (res.data.resultCode === 0) {
+                        const action = editTaskTitleAC(newTitle, todolistId, taskId)
+                        dispatch(action)
+                        dispatch(setAppStatusAC('succeeded'))
+                    } else {
+                        handleServerAppError(res.data, dispatch)
+                        // dispatch(setErrorAC(res.data.messages[0]))
+                        // dispatch(setAppStatusAC('failed'))
+                    }
+                })
+                .catch((error) => {
+                    handleServerNetworkError(error, dispatch)
+                    // dispatch(setErrorAC(error.message))
+                    // dispatch(setAppStatusAC('failed'))
+
+                })
         }
     }
 }
 export const removeTaskTC = (todolistId: string, id: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     tasksAPI.deleteTask(todolistId, id)
-        .then(() => {
-            const action = removeTaskAC(id, todolistId);
-            dispatch(action);
-            dispatch(setAppStatusAC('succeeded'))
+        .then((res) => {
+            if (res.data.resultCode === 0) {
+                const action = removeTaskAC(id, todolistId);
+                dispatch(action);
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 
@@ -206,11 +244,19 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
                 description: task.description,
                 deadline: task.deadline,
                 status: status
-            }).then(() => {
-                const action = changeTaskStatusAC(taskId, status, todolistId)
-                dispatch(action)
-                dispatch(setAppStatusAC('succeeded'))
             })
+                .then((res) => {
+                    if (res.data.resultCode === 0) {
+                        const action = changeTaskStatusAC(taskId, status, todolistId)
+                        dispatch(action)
+                        dispatch(setAppStatusAC('succeeded'))
+                    } else {
+                        handleServerAppError(res.data, dispatch)
+                    }
+                })
+                .catch((error) => {
+                    handleServerNetworkError(error, dispatch)
+                })
         }
     }
 }
@@ -220,10 +266,20 @@ export const fetchTasksTC = (todolistId: string) => {
         dispatch(setAppStatusAC('loading'))
         tasksAPI.getTasks(todolistId)
             .then((res) => {
-                const tasks = res.data.items
-                const action = setTasksAC(tasks, todolistId)
-                dispatch(action)
-                dispatch(setAppStatusAC('succeeded'))
+                if (!res.data.error) {
+                    const tasks = res.data.items
+                    const action = setTasksAC(tasks, todolistId)
+                    dispatch(action)
+                    dispatch(setAppStatusAC('succeeded'))
+                } else {
+                    dispatch(setErrorAC(res.data.error))
+                    dispatch(setAppStatusAC('failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(setErrorAC(error.message))
+                dispatch(setAppStatusAC('failed'))
+
             })
     }
 }

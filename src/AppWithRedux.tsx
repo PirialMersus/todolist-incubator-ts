@@ -28,13 +28,14 @@ import {AppRootStateType} from "./state/store";
 import {TaskStatuses, TaskType} from './api/tasks-api';
 import {RequestStatusType} from './state/app-reducer';
 import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
+import {TodolistType} from "./api/todolist-api";
 
-export type TodoListType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-export type TodolistsType = Array<TodoListType>
+// export type TodoListType = {
+//     id: string
+//     title: string
+//     filter: FilterValuesType
+// }
+export type TodolistsType = Array<TodolistType>
 
 export type TasksType = {
     [key: string]: Array<TaskType>
@@ -49,7 +50,7 @@ function AppWithRedux() {
         dispatch(fetchTodolistsTC())
     }, [])
 
-    const todolists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists)
+    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks
     )
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status
@@ -124,6 +125,7 @@ function AppWithRedux() {
                                     <Paper style={{padding: "10px"}}>
                                         <Todolist title={tl.title}
                                                   filter={tl.filter}
+                                                  entityStatus={tl.entityStatus}
                                                   clickOnCheckBox={changeTaskStatus}
                                                   editTodolistTitle={editTodolistTitle}
                                                   editTaskTitle={editTaskTitle}

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {FilterValuesType} from "../state/todolists-reducer";
+import { RequestStatusType } from '../state/app-reducer';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -14,9 +16,11 @@ export type TodolistType= {
     addedDate: string
     order: number
     title: string
+    filter: FilterValuesType
+    entityStatus: RequestStatusType
 }
 
-type ResponseType<D = {}> = {
+export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
     data: D

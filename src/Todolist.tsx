@@ -1,18 +1,19 @@
-import React, {ChangeEvent, useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import AddItemForm from "./components/AddItemForm/AddItemForm";
 import EditableSpan from "./components/EditableSpan/EditableSpan";
 import IconButton from '@material-ui/core/IconButton';
 import {Delete} from '@material-ui/icons';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import Task from "./components/Task/Task";
 import {TaskStatuses, TaskType} from './api/tasks-api';
 import {FilterValuesType} from './state/todolists-reducer';
 import {fetchTasksTC} from './state/tasks-reducer';
 import {useDispatch} from "react-redux";
+import {RequestStatusType} from "./state/app-reducer";
 
 
 type PropsType = {
+    entityStatus: RequestStatusType
     title: string
     tasks: Array<TaskType>
     editTodolistTitle: (todoListId: string, title: string) => void
@@ -78,10 +79,16 @@ export const Todolist = React.memo((props: PropsType) => {
             value={props.title}
             class={"todoListTitle"}
         />
-        <IconButton aria-label="delete" onClick={removeTodolist}><Delete/>
+        <IconButton
+            aria-label="delete"
+            onClick={removeTodolist}
+            disabled={props.entityStatus === 'loading'}
+        >
+            <Delete/>
         </IconButton>
         <AddItemForm
             addItem={addTask}
+            disabled={props.entityStatus === 'loading'}
         />
         <ul>
             {
