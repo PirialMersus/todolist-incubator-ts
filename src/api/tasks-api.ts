@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {RequestStatusType} from "../state/app-reducer";
 
 export enum TaskStatuses {
     New = 0,
@@ -45,6 +46,7 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
+    entityStatus: RequestStatusType
 }
 
 type ResponseType<D> = {

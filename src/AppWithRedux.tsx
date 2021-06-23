@@ -116,7 +116,7 @@ function AppWithRedux() {
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "10px"}}>
-                    <AddItemForm addItem={addTodolist}/>
+                    <AddItemForm addItem={addTodolist} disabled={status === 'loading'}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {

@@ -1,12 +1,14 @@
 import React, {ChangeEvent, useState} from "react";
 import AddItemForm from "../AddItemForm/AddItemForm";
 import TextField from "@material-ui/core/TextField";
+import {RequestStatusType} from "../../state/app-reducer";
 
 export type EditableSpanPropsType = {
     editItem: (title: string, taskId?: string) => void
     value: string
     taskId?: string
     class?: string
+    entityStatus?: RequestStatusType
 }
 
 const EditableSpan = React.memo((props: EditableSpanPropsType) => {
@@ -14,7 +16,9 @@ const EditableSpan = React.memo((props: EditableSpanPropsType) => {
     const [value, setValue] = useState(props.value)
 
     const onDoubleClickHandler = () => {
-        setEditMode(true)
+        if (props.entityStatus !== 'loading') {
+            setEditMode(true)
+        }
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value)

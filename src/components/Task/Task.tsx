@@ -11,7 +11,6 @@ export type TaskPropsType = {
     editItem: (value: string, taskId: string | undefined) => void
     removeTask: (taskId: string, todolistId: string) => void
     clickOnCheckBox: (id: string, status: TaskStatuses, todolistId: string) => void
-
 }
 
 const Task = React.memo(({task, todoListId, editItem, removeTask, clickOnCheckBox}: TaskPropsType) => {
@@ -27,13 +26,20 @@ const Task = React.memo(({task, todoListId, editItem, removeTask, clickOnCheckBo
                 checked={task.status === TaskStatuses.Completed}
                 value="checkedA"
                 color={"primary"}
+                disabled={task.entityStatus === 'loading'}
             />
             {/*<input*/}
             {/*    type="checkbox"*/}
             {/*    checked={t.isDone}*/}
             {/*    onChange={onChangeHandler}/>*/}
-            <EditableSpan editItem={editItem} value={task.title} taskId={task.id}/>
-            <IconButton aria-label="delete" onClick={() => {
+            <EditableSpan
+                entityStatus={task.entityStatus}
+                editItem={editItem}
+                value={task.title}
+                taskId={task.id}/>
+            <IconButton
+                disabled={task.entityStatus === 'loading'}
+                aria-label="delete" onClick={() => {
                 removeTask(task.id, todoListId)
             }}><Delete/>
             </IconButton>

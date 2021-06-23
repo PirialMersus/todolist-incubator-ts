@@ -80,12 +80,12 @@ export const todoListReducer = (state: Array<TodolistDomainType> = initialState,
         }
         case "SET-TODOLISTS":
             return action.todos.map(tl => {
-                return {...tl, filter: 'all'}
+                return {...tl, filter: 'all', entityStatus: "succeeded"}
             })
         case "CHANGE-TODOLIST-ENTITY-STATUS":
             const todolist = state.find(tl => tl.id === action.id);
             if (todolist) {
-                // если нашёлся - изменим ему заголовок
+                // если нашёлся - изменим ему entityStatus
                 todolist.entityStatus = action.entityStatus;
             }
             return [...state]
