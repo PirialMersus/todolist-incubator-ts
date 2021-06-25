@@ -45,9 +45,17 @@ export const todolistAPI = {
     }
 }
 
+type AuthApiResponseType = {
+    resultCode: number
+    messages: Array<string>,
+    data: {
+        userId: number
+    }
+}
+
 export const authAPI = {
-    login() {
-        const promise = instance.get<Array<TodolistType>>('todo-lists')
+    login(email: string, password: string) {
+        const promise = instance.post<AuthApiResponseType>('/auth/login', {email, password})
         return promise
     }
 }
