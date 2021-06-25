@@ -44,3 +44,11 @@ export const todolistAPI = {
         return promise
     }
 }
+
+export const authAPI = {
+    login() {
+        const promise = instance.get<Array<TodolistType>>('todo-lists')
+        return promise
+    }
+}
+

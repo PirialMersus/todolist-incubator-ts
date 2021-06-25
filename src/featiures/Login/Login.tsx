@@ -24,15 +24,16 @@ export const Login = () => {
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address';
             }
-            if (!values.password) {
-                //errors.password = 'password must be 10 symbols or less';
-                errors.password = 'Обязательное поле';
+            if (values.password.length > 9) {
+                errors.password = 'password must be 10 symbols or less';
+                // errors.password = 'Обязательное поле';
             } else if (values.password.length < 4) {
-                errors.password = 'password маленький';
+                errors.password = 'password is to small';
             }
             return errors;
         },
         onSubmit: values => {
+            formik.resetForm()
             alert(JSON.stringify(values));
         },
     })
@@ -57,22 +58,18 @@ export const Login = () => {
                         <TextField
                             label="Email"
                             margin="normal"
-                            name='email'
                             type='email'
-                            onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.email}
+                            {...formik.getFieldProps('email')}
                         />
                         {formik.touched.email && formik.errors.email &&
                         <div style={{color: 'red'}}>{formik.errors.email}</div>}
                         <TextField
                             type="password"
                             label="Password"
-                            name='password'
                             margin='normal'
-                            onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.password}
+                            {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password &&
                         <div style={{color: 'red'}}>{formik.errors.password}</div>}
