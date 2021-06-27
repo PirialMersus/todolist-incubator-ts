@@ -1,25 +1,19 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
-import {addTaskTC, changeTaskTitleTC, removeTaskTC, updateTaskStatusTC} from './state/tasks-reducer';
-import {
-    addTodolistTC,
-    changeTodoListFilterAC,
-    changeTodolistTitleTC,
-    fetchTodolistsTC,
-    FilterValuesType,
-    removeTodolistTC
-} from './state/todolists-reducer';
+import {fetchTodolistsTC} from './state/todolists-reducer';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TaskStatuses, TaskType} from './api/tasks-api';
-import {RequestStatusType} from './state/app-reducer';
+import {TaskType} from './api/tasks-api';
+import {initializeAppTC, RequestStatusType} from './state/app-reducer';
 import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistType} from "./api/todolist-api";
-import {Route, Switch, Redirect} from 'react-router-dom'
+import {Redirect, Route, Switch, useHistory} from 'react-router-dom'
 import TodolistsList from "./featiures/TodolistsList/TodolistsList";
 import {Login} from './featiures/Login/Login';
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {logoutTC} from "./state/auth-reducer";
 
 export type TodolistsType = Array<TodolistType>
 
@@ -34,59 +28,34 @@ type PropsType = {
 function App(props: PropsType) {
     const dispatch = useDispatch()
 
+    const isLogin = useSelector<AppRootStateType, boolean>(state => state.authReducer.isLoggedIn)
+    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
 
     useEffect(() => {
+        dispatch(initializeAppTC())
+    }, [])
+
+    useEffect(() => {
+        if (props.demo || !isLogin){
+            return
+        }
         dispatch(fetchTodolistsTC())
     }, [])
 
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksType>(state => state.tasks
-    )
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status
     )
 
-    // const [taskValue, setTaskValue] = useState('')
+    const onClickHandler = () => {
+        dispatch(logoutTC())
+    }
 
-    // function setTempTaskValue(text: string) {
-    //     setTaskValue(text)
-    // }
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
 
-
-    const removeTodolist = useCallback((todolistId: string) => {
-        dispatch(removeTodolistTC(todolistId))
-    }, [, tasks])
-
-    const addTodolist = useCallback((todolistTitle: string) => {
-        const action = addTodolistTC(todolistTitle)
-        dispatch(action)
-    }, [])
-
-    const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
-        dispatch(changeTodoListFilterAC(todolistId, value))
-    }, [])
-
-    const editTodolistTitle = useCallback((todoListId: string, title: string) => {
-        dispatch(changeTodolistTitleTC(todoListId, title))
-    }, [])
-
-
-    const addTask = useCallback((todolistId: string, taskValue: string) => {
-        if (taskValue.trim().length !== 0) {
-            (dispatch(addTaskTC(todolistId, taskValue)))
-        }
-    }, [])
-
-    const editTaskTitle = useCallback((value: string, todolistId: string, taskId: string) => {
-        dispatch(changeTaskTitleTC(taskId, todolistId, value))
-    }, [])
-
-    const removeTask = useCallback((id: string, todolistId: string) => {
-        dispatch(removeTaskTC(todolistId, id))
-    }, [])
-
-    const changeTaskStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskStatusTC(id, todolistId, status))
-    }, [])
 
     return (
         <div className="App">
@@ -97,9 +66,9 @@ function App(props: PropsType) {
                         <Menu open={false}/>
                     </IconButton>
                     <Typography variant="h6" className={""}>
-                        Ne
+                        News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLogin && <Button color="inherit" onClick={onClickHandler}>Log out</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress color={"secondary"}/>}
             </AppBar>

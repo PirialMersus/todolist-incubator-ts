@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {FilterValuesType} from "../state/todolists-reducer";
-import { RequestStatusType } from '../state/app-reducer';
+import {RequestStatusType} from '../state/app-reducer';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -11,7 +11,7 @@ const instance = axios.create({
     }
 })
 
-export type TodolistType= {
+export type TodolistType = {
     id: string
     addedDate: string
     order: number
@@ -36,7 +36,7 @@ export const todolistAPI = {
         return promise
     },
     createTodolist(title: string) {
-        const promise = instance.post<ResponseType<{item: TodolistType}>>('todo-lists', {title})
+        const promise = instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title})
         return promise
     },
     getTodolists() {
@@ -55,8 +55,25 @@ type AuthApiResponseType = {
 
 export const authAPI = {
     login(email: string, password: string) {
-        const promise = instance.post<AuthApiResponseType>('/auth/login', {email, password})
+        const promise = instance.post<AuthApiResponseType>('auth/login', {email, password})
         return promise
+    },
+    me() {
+        const promise = instance.get<AuthMeResponseType>('auth/me',)
+        return promise
+    },
+    logout(){
+        const promise = instance.delete('auth/login')
+        return promise
+    }
+}
+export type AuthMeResponseType = {
+    resultCode: number
+    messages: Array<string>
+    data: {
+        id: number
+        email: string
+        login: string
     }
 }
 

@@ -1,8 +1,10 @@
 import React from 'react'
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
 import {useFormik} from "formik";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "../../state/auth-reducer";
+import {AppRootStateType} from "../../state/store";
+import {Redirect} from 'react-router-dom';
 
 type FormikErrorType = {
     email?: string
@@ -13,6 +15,7 @@ type FormikErrorType = {
 
 export const Login = () => {
     const dispatch = useDispatch();
+    const isLogin = useSelector<AppRootStateType, boolean>(state => state.authReducer.isLoggedIn)
 
     const formik = useFormik({
         initialValues: {
@@ -27,20 +30,21 @@ export const Login = () => {
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address';
             }
-            if (values.password.length > 9) {
-                errors.password = 'password must be 10 symbols or less';
-                // errors.password = 'Обязательное поле';
-            } else if (values.password.length < 4) {
+            if (values.password.length === 0) {
+                errors.password = 'enter the password'
+            } else if (values.password.length < 3) {
                 errors.password = 'password is to small';
             }
             return errors;
         },
         onSubmit: values => {
-            dispatch(loginTC(values.email,values.password))
+            dispatch(loginTC(values.email, values.password))
             formik.resetForm()
         },
     })
-
+    if (isLogin) {
+        return <Redirect to='/'/>
+    }
 
     return <Grid container justify="center">
         <Grid item xs={4}>

@@ -221,7 +221,7 @@ export const fetchTodolistsTC = () => (dispatch: Dispatch) => {
             }
         })
         .catch(error => {
-            dispatch(setErrorAC(error))
+            dispatch(setErrorAC('Unknown error'))
             dispatch(setAppStatusAC('failed'))
         })
 }

@@ -17,6 +17,7 @@ import {
 import {addTaskTC, changeTaskTitleTC, removeTaskTC, updateTaskStatusTC} from "../../state/tasks-reducer";
 import AddItemForm from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from './Todolist/Todolist';
+import { Redirect } from 'react-router-dom';
 
 export type TodolistsType = Array<TodolistType>
 
@@ -30,6 +31,7 @@ type PropsType = {
 
 function TodolistsList(props: PropsType) {
     const dispatch = useDispatch()
+    const isLogin = useSelector<AppRootStateType, boolean>(state => state.authReducer.isLoggedIn)
 
 
     useEffect(() => {
@@ -77,6 +79,10 @@ function TodolistsList(props: PropsType) {
     const changeTaskStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
         dispatch(updateTaskStatusTC(id, todolistId, status))
     }, [])
+
+    if (!isLogin){
+        return <Redirect to='/login'/>
+    }
 
     return (
         <div className="App">
