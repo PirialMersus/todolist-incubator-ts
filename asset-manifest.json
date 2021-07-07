@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/todolist-incubator-ts/static/css/main.7a6bf93a.chunk.css",
-    "main.js": "/todolist-incubator-ts/static/js/main.34c0b768.chunk.js",
-    "main.js.map": "/todolist-incubator-ts/static/js/main.34c0b768.chunk.js.map",
+    "main.js": "/todolist-incubator-ts/static/js/main.538ebabe.chunk.js",
+    "main.js.map": "/todolist-incubator-ts/static/js/main.538ebabe.chunk.js.map",
     "runtime-main.js": "/todolist-incubator-ts/static/js/runtime-main.6ca8abb4.js",
     "runtime-main.js.map": "/todolist-incubator-ts/static/js/runtime-main.6ca8abb4.js.map",
     "static/js/2.2922effe.chunk.js": "/todolist-incubator-ts/static/js/2.2922effe.chunk.js",
     "static/js/2.2922effe.chunk.js.map": "/todolist-incubator-ts/static/js/2.2922effe.chunk.js.map",
     "index.html": "/todolist-incubator-ts/index.html",
-    "precache-manifest.c84b8f0bfee98b077c882889f2f00288.js": "/todolist-incubator-ts/precache-manifest.c84b8f0bfee98b077c882889f2f00288.js",
+    "precache-manifest.ddfb3093a3e773b2847dcf66aaed4c15.js": "/todolist-incubator-ts/precache-manifest.ddfb3093a3e773b2847dcf66aaed4c15.js",
     "service-worker.js": "/todolist-incubator-ts/service-worker.js",
     "static/css/main.7a6bf93a.chunk.css.map": "/todolist-incubator-ts/static/css/main.7a6bf93a.chunk.css.map",
     "static/js/2.2922effe.chunk.js.LICENSE.txt": "/todolist-incubator-ts/static/js/2.2922effe.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.6ca8abb4.js",
     "static/js/2.2922effe.chunk.js",
     "static/css/main.7a6bf93a.chunk.css",
-    "static/js/main.34c0b768.chunk.js"
+    "static/js/main.538ebabe.chunk.js"
   ]
 }
